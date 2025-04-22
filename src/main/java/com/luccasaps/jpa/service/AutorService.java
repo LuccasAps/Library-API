@@ -2,8 +2,10 @@ package com.luccasaps.jpa.service;
 
 import com.luccasaps.jpa.exceptions.OperacaoNaoPermitidaException;
 import com.luccasaps.jpa.model.Autor;
+import com.luccasaps.jpa.model.Usuario;
 import com.luccasaps.jpa.repository.AutorRepostitory;
 import com.luccasaps.jpa.repository.LivroRepository;
+import com.luccasaps.jpa.security.SecurityService;
 import com.luccasaps.jpa.validator.AutorValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
@@ -21,9 +23,12 @@ public class AutorService {
     private final AutorRepostitory autorRepostitory;
     private final AutorValidator autorValidator;
     private final LivroRepository livroRepository;
+    private final SecurityService securityService;
 
     public Autor salvar (Autor autor) {
         autorValidator.validar(autor);
+        Usuario usuario = securityService.obterUsuarioLogado();
+        autor.setUsuario(usuario);
         return autorRepostitory.save(autor);
     }
 

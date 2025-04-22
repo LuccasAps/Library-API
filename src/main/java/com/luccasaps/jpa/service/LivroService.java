@@ -2,7 +2,9 @@ package com.luccasaps.jpa.service;
 
 import com.luccasaps.jpa.model.GeneroLivro;
 import com.luccasaps.jpa.model.Livro;
+import com.luccasaps.jpa.model.Usuario;
 import com.luccasaps.jpa.repository.LivroRepository;
+import com.luccasaps.jpa.security.SecurityService;
 import com.luccasaps.jpa.validator.LivroValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,9 +24,12 @@ public class LivroService {
 
     private final LivroRepository livroRepository;
     private final LivroValidator livroValidator;
+    private final SecurityService securityService;
 
     public Livro salvar(Livro livro) {
         livroValidator.validar(livro);
+        Usuario usuario = securityService.obterUsuarioLogado();
+        livro.setUsuario(usuario);
         return livroRepository.save(livro);
     }
 

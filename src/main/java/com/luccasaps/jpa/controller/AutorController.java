@@ -3,10 +3,16 @@ package com.luccasaps.jpa.controller;
 import com.luccasaps.jpa.controller.dto.AutorDTO;
 import com.luccasaps.jpa.controller.mappers.AutorMapper;
 import com.luccasaps.jpa.model.Autor;
+import com.luccasaps.jpa.model.Usuario;
+import com.luccasaps.jpa.security.SecurityService;
 import com.luccasaps.jpa.service.AutorService;
+import com.luccasaps.jpa.service.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -27,6 +33,7 @@ public class AutorController implements GenericController {
     private final AutorMapper autorMapper;
 
     @PostMapping
+    @PreAuthorize("hasRole('GERENTE')")
     // ^ mesma coisa @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> salvar(@RequestBody @Valid AutorDTO dto) {
 
@@ -37,6 +44,7 @@ public class AutorController implements GenericController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('OPERADOR', 'GERENTE')")
     public ResponseEntity<AutorDTO> obterDetalhes(@PathVariable String id) {
         var idAutor = UUID.fromString(id);
         Optional<Autor> autorOptional = autorService.obterPorId(idAutor);
@@ -51,6 +59,7 @@ public class AutorController implements GenericController {
 
     //indenpontente
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity<Void> excluir(@PathVariable("id") String id) {
 
         var idAutor = UUID.fromString(id);
@@ -65,6 +74,7 @@ public class AutorController implements GenericController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('OPERADOR', 'GERENTE')")
     public ResponseEntity<List<AutorDTO>> pesquisar(
             @RequestParam(value = "nome", required = false) String nome,
             @RequestParam(value = "nacionalidade", required = false) String nacionalidade) {
@@ -79,6 +89,7 @@ public class AutorController implements GenericController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity<Void> atualizar(@PathVariable("id") String id,
                                             @RequestBody @Valid AutorDTO dto) {
 

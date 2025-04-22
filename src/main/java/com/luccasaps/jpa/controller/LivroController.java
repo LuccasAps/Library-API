@@ -10,11 +10,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/livros")
@@ -25,6 +24,7 @@ public class LivroController implements GenericController {
     private final LivroMapper livroMapper;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('OPERADOR', 'GERENTE')")
     public ResponseEntity<Void> salvar(@RequestBody @Valid CadastroLivroDTO dto) {
 
         Livro livro = livroMapper.toEntity(dto);
@@ -36,6 +36,7 @@ public class LivroController implements GenericController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('OPERADOR', 'GERENTE')")
     public ResponseEntity<ResultadoPesquisaLivroDTO> obterDetalhes(@PathVariable String id) {
         return livroService.obterPorId(UUID.fromString(id))
                 .map(livro -> {
@@ -45,6 +46,7 @@ public class LivroController implements GenericController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('OPERADOR', 'GERENTE')")
     public ResponseEntity<Object> deletar(@PathVariable String id) {
         return livroService.obterPorId(UUID.fromString(id)).map(livro -> {
             livroService.deletar(livro);
@@ -53,6 +55,7 @@ public class LivroController implements GenericController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('OPERADOR', 'GERENTE')")
     public ResponseEntity<Page<ResultadoPesquisaLivroDTO>> pesquisa(
             @RequestParam(value = "isbn", required = false)
             String isbn,
@@ -83,6 +86,7 @@ public class LivroController implements GenericController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('OPERADOR', 'GERENTE')")
     public ResponseEntity<Object> atualizar(
             @PathVariable("id") String id, @RequestBody @Valid CadastroLivroDTO dto) {
 
