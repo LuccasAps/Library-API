@@ -22,8 +22,14 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ErroResposta handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
         List<FieldError> fieldErrors = e.getFieldErrors();
-        List<ErrorCampo> listaErrors = fieldErrors.stream().map(fe -> new ErrorCampo(fe.getField(), fe.getDefaultMessage())).toList();
-        return new ErroResposta(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Erro de validação", listaErrors);
+        List<ErrorCampo> listaErrors = fieldErrors
+                .stream()
+                .map(fe -> new ErrorCampo(fe.getField(), fe.getDefaultMessage()))
+                .toList();
+        return new ErroResposta(
+                HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                "Erro de validação",
+                listaErrors);
     }
 
     @ExceptionHandler(RegistroDuplicadoException.class)
@@ -43,7 +49,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CampoInvalidoException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ErroResposta handleCampoInvalidoException(CampoInvalidoException e) {
-        return new ErroResposta(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Erro validacao", List.of(new ErrorCampo(e.getCampo(), e.getMessage())));
+        return new ErroResposta(
+                HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                "Erro validacao",
+                List.of(new ErrorCampo(e.getCampo(), e.getMessage())));
     }
 
     @ExceptionHandler(AccessDeniedException.class)

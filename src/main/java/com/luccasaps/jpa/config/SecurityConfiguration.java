@@ -2,6 +2,7 @@ package com.luccasaps.jpa.config;
 
 
 import com.luccasaps.jpa.security.CustomUserDetailsService;
+import com.luccasaps.jpa.security.LoginSocialSuccessHandler;
 import com.luccasaps.jpa.service.UsuarioService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +24,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, LoginSocialSuccessHandler successHandler) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 //.formLogin(configurer -> configurer.loginPage("/login").permitAll())
@@ -36,7 +37,9 @@ public class SecurityConfiguration {
 
                     authorize.anyRequest().authenticated();
                 })
-                .oauth2Login(Customizer.withDefaults())
+                .oauth2Login(oAuth2 -> {
+                    oAuth2.successHandler(successHandler);
+                })
                 .build();
     }
 

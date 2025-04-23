@@ -3,9 +3,9 @@ package com.luccasaps.jpa.controller;
 import com.luccasaps.jpa.controller.dto.UsuarioDTO;
 import com.luccasaps.jpa.controller.mappers.UsuarioMapper;
 import com.luccasaps.jpa.service.UsuarioService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +18,7 @@ public class UsuarioController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void salvar (@RequestBody UsuarioDTO dto){
+    public void salvar (@RequestBody @Valid UsuarioDTO dto){
         var usuario = usuarioMapper.toEntity(dto);
         usuarioService.salvar(usuario);
     }

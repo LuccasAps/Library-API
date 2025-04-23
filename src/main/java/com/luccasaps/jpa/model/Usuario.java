@@ -5,13 +5,15 @@ import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.Type;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table
+@Table(name = "usuario")
 @Data
+@EntityListeners(AuditingEntityListener.class)
 public class Usuario {
 
     @Id
@@ -23,6 +25,9 @@ public class Usuario {
 
     @Column
     private String senha;
+
+    @Column
+    private String email;
 
     @Type(ListArrayType.class)
     @Column(name = "roles", columnDefinition = "varchar[]")
