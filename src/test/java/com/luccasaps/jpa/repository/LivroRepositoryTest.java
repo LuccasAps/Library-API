@@ -18,7 +18,7 @@ public class LivroRepositoryTest {
     LivroRepository repository;
 
     @Autowired
-    AutorRepostitory autorRepostitory;
+    AutorRepository autorRepository;
 
     @Test
     void salvarTest(){
@@ -29,7 +29,7 @@ public class LivroRepositoryTest {
         livro.setTitulo("Ciencias");
         livro.setDataPublicacao(LocalDate.of(1980,1,2));
 
-        Autor autor = autorRepostitory.findById(UUID.fromString("8c1129bf-4038-460a-a0f0-63dbe7012a4a")).orElse(null);
+        Autor autor = autorRepository.findById(UUID.fromString("8c1129bf-4038-460a-a0f0-63dbe7012a4a")).orElse(null);
 
         livro.setAutor(autor);
 

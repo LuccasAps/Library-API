@@ -2,8 +2,7 @@ package com.luccasaps.jpa.validator;
 
 import com.luccasaps.jpa.exceptions.RegistroDuplicadoException;
 import com.luccasaps.jpa.model.Autor;
-import com.luccasaps.jpa.repository.AutorRepostitory;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.luccasaps.jpa.repository.AutorRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -11,11 +10,11 @@ import java.util.Optional;
 @Component
 public class AutorValidator {
 
-    private AutorRepostitory autorRepostitory;
+    private AutorRepository autorRepository;
 
 
-    public AutorValidator(AutorRepostitory autorRepostitory) {
-        this.autorRepostitory = autorRepostitory;
+    public AutorValidator(AutorRepository autorRepository) {
+        this.autorRepository = autorRepository;
     }
 
     public void validar(Autor autor) {
@@ -25,7 +24,7 @@ public class AutorValidator {
     }
 
     private boolean existeAutorCadastrado(Autor autor) {
-        Optional<Autor> autorEncontrado = autorRepostitory.findByNomeAndDataNascimentoAndNacionalidade(
+        Optional<Autor> autorEncontrado = autorRepository.findByNomeAndDataNascimentoAndNacionalidade(
                 autor.getNome(),
                 autor.getDataNascimento(),
                 autor.getNacionalidade()

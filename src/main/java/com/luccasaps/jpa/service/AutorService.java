@@ -3,7 +3,7 @@ package com.luccasaps.jpa.service;
 import com.luccasaps.jpa.exceptions.OperacaoNaoPermitidaException;
 import com.luccasaps.jpa.model.Autor;
 import com.luccasaps.jpa.model.Usuario;
-import com.luccasaps.jpa.repository.AutorRepostitory;
+import com.luccasaps.jpa.repository.AutorRepository;
 import com.luccasaps.jpa.repository.LivroRepository;
 import com.luccasaps.jpa.security.SecurityService;
 import com.luccasaps.jpa.validator.AutorValidator;
@@ -20,7 +20,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AutorService {
 
-    private final AutorRepostitory autorRepostitory;
+    private final AutorRepository autorRepository;
     private final AutorValidator autorValidator;
     private final LivroRepository livroRepository;
     private final SecurityService securityService;
@@ -29,7 +29,7 @@ public class AutorService {
         autorValidator.validar(autor);
         Usuario usuario = securityService.obterUsuarioLogado();
         autor.setUsuario(usuario);
-        return autorRepostitory.save(autor);
+        return autorRepository.save(autor);
     }
 
     public void atualizar(Autor autor) {
@@ -37,33 +37,33 @@ public class AutorService {
             throw new IllegalArgumentException("Para atualizar é necessario que o autor ja esteja salvo na base");
         }
         autorValidator.validar(autor);
-        autorRepostitory.save(autor);
+        autorRepository.save(autor);
     }
 
     public Optional<Autor> obterPorId(UUID id) {
-        return autorRepostitory.findById(id);
+        return autorRepository.findById(id);
     }
 
     public void excluir(Autor autor) {
         if(possuiLivro(autor)){
             throw new OperacaoNaoPermitidaException("Não é permitido excluir um Autor possui livros cadastrados");
         }
-        autorRepostitory.delete(autor);
+        autorRepository.delete(autor);
     }
 
     public List<Autor> pesquisa(String nome,String nacionalidade) {
 
         if(nome != null && nacionalidade != null) {
-            return autorRepostitory.findByNomeAndNacionalidade(nome, nacionalidade);
+            return autorRepository.findByNomeAndNacionalidade(nome, nacionalidade);
         }
         if(nome != null) {
-            return autorRepostitory.findByNome(nome);
+            return autorRepository.findByNome(nome);
         }
         if(nacionalidade != null) {
-            return autorRepostitory.findByNacionalidade(nacionalidade);
+            return autorRepository.findByNacionalidade(nacionalidade);
         }
 
-        return autorRepostitory.findAll();
+        return autorRepository.findAll();
     }
 
     public List<Autor> pesquisaByExample(String nome,String nacionalidade){
@@ -79,7 +79,7 @@ public class AutorService {
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
         Example<Autor> autorExample =  Example.of(autor, matcher);
 
-        return autorRepostitory.findAll(autorExample);
+        return autorRepository.findAll(autorExample);
     }
 
     public boolean possuiLivro(Autor autor){
