@@ -36,11 +36,11 @@ public class AuthorizationServerConfiguration {
     @Bean
     public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
         // Configurar para corresponder apenas a caminhos do servidor de autorização
-        http.securityMatcher("/oauth2/**", "/login", "/connect/register");
-        
-        //OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http); //⇐ method "applyDefaultSecurity()" is deprecated
+        //http.securityMatcher("/oauth2/**",  "/login", "/connect/register");
 
-        http.with(OAuth2AuthorizationServerConfigurer.authorizationServer(), Customizer.withDefaults()); // ⇐ solução do metodo deprecated
+        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http); //⇐ method "applyDefaultSecurity()" is deprecated on version 3.4.4 of Spring boot
+
+        //http.with(OAuth2AuthorizationServerConfigurer.authorizationServer(), Customizer.withDefaults()); // ⇐ solução do metodo deprecated
 
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .oidc(Customizer.withDefaults());
