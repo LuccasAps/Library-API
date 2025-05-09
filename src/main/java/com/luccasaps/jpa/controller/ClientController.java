@@ -18,7 +18,7 @@ public class ClientController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('GERENTE')")
-    public void  salvar(@RequestBody Client client) {
+    public void salvar(@RequestBody Client client) {
         clientService.salvar(client);
     }
 }
