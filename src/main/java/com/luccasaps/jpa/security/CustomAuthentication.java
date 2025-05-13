@@ -16,7 +16,6 @@ public class CustomAuthentication implements Authentication {
 
     private final Usuario usuario;
 
-
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
         return this.usuario
