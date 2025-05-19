@@ -21,5 +21,25 @@ spring:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_SECRET}
 
+logging:
+  file:
+    name: app.log
+  level:
+    root: warn
+    com:
+      luccasaps:
+        jpa: trace
+    org:
+      springframework:
+        web: debug
+        security: trace
+
+# hierarquia:
+# trace (mais detalhado, abrange todos os niveis a baixo)
+# debug
+# info
+# warn
+# error
+
 springdoc:
   override-with-generic-response: false
