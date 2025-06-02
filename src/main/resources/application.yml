@@ -1,23 +1,23 @@
 spring:
   application:
     name: JPA
+#  profiles:
+#    active: producao
+#SPRING_PROFILES_ACTIVE= ---
   output:
     ansi:
       enabled: ALWAYS
-
-
   datasource:
-    url: jdbc:postgresql://localhost:5432/library
-    username: postgres
-    password: postgres
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/library}
+    username: ${DATASOURCE_USERNAME:postgres}
+    password: ${DATASOURCE_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: none
-    show-sql: true
     properties:
-      hibernate:
-        format_sql: true
+      hibernate.format_sql: true
   security:
     oauth2:
       client:
@@ -59,3 +59,23 @@ management:
     web:
       exposure:
         include: '*'
+
+
+#produção
+---
+spring:
+  config:
+    activate:
+      on-profile: producao
+  jpa:
+    show-sql: false
+
+
+#teste
+---
+spring:
+  config:
+    activate:
+      on-profile: teste
+  jpa:
+    show-sql: true
