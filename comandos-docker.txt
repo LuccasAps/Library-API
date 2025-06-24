@@ -16,4 +16,5 @@ docker run --name pgadmin4 -e PGADMIN_DEFAULT_EMAIL=admin@admin.com -e PGADMIN_D
 #rodar banco de prod
 docker run --name librarydb-prod -e POSTGRES_PASSWORD=postgresprod -e POSTGRES_USER=postgresprod -e POSTGRES_DB=library -p 5433:5432 -d --network library-network postgres:16.3
 
+#criar container docker com a imagem da API na AWS
 

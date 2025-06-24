@@ -9,7 +9,7 @@ spring:
       enabled: ALWAYS
   datasource:
     url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/library}
-    username: ${DATASOURCE_USERNAME:postgres}
+    username: ${DATASOURCE_USER:postgres}
     password: ${DATASOURCE_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
   jpa:
