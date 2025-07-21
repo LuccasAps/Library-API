@@ -6,6 +6,7 @@ import com.luccasaps.jpa.controller.mappers.LivroMapper;
 import com.luccasaps.jpa.model.GeneroLivro;
 import com.luccasaps.jpa.model.Livro;
 import com.luccasaps.jpa.service.LivroService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/livros")
+@Tag(name = "Livros")
 @RequiredArgsConstructor
 public class LivroController implements GenericController {
 

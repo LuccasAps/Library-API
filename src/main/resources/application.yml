@@ -32,14 +32,14 @@ logging:
   file:
     name: app.log
   level:
-    root: warn
+    root: info
     com:
       luccasaps:
-        jpa: trace
+        jpa: info
     org:
       springframework:
-        web: debug
-        security: trace
+        web: info
+        security: info
 
 # hierarquia:
 # trace (mais detalhado, abrange todos os niveis a baixo)

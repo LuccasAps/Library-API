@@ -3,6 +3,7 @@ package com.luccasaps.jpa.controller;
 import com.luccasaps.jpa.controller.dto.UsuarioDTO;
 import com.luccasaps.jpa.controller.mappers.UsuarioMapper;
 import com.luccasaps.jpa.service.UsuarioService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("usuarios")
+@Tag(name = "Usuarios")
 @RequiredArgsConstructor
 public class UsuarioController {
 
