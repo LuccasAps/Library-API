@@ -57,4 +57,7 @@ public class Livro {
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
+    @Version
+    private Long versao;
+
 }

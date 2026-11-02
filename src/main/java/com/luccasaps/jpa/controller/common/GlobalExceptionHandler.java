@@ -3,10 +3,12 @@ package com.luccasaps.jpa.controller.common;
 import com.luccasaps.jpa.controller.dto.ErroResposta;
 import com.luccasaps.jpa.controller.dto.ErrorCampo;
 import com.luccasaps.jpa.exceptions.CampoInvalidoException;
+import com.luccasaps.jpa.exceptions.ObjectOptimisticLockingFailureException;
 import com.luccasaps.jpa.exceptions.OperacaoNaoPermitidaException;
 import com.luccasaps.jpa.exceptions.RegistroDuplicadoException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
+import java.util.Map;
 
 @RestControllerAdvice
 @Slf4j
@@ -75,5 +78,14 @@ public class GlobalExceptionHandler {
         return new ErroResposta(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Ocorreu um erro inesperado. Entre em contato com a administração do sistema",
                 List.of());
+    }
+
+    @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<Object> handleConcurrencyError(ObjectOptimisticLockingFailureException ex) {
+        log.error("Conflito de Concorrencia", ex);
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("mensagem", "Este registro foi atualizado por outro usuario ao mesmo tempo. Por favor, recarregue a página."));
     }
 }
